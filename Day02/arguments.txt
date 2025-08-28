@@ -1,0 +1,124 @@
+##What are Arguments in Shell Scripting?
+    Arguments are values passed to a shell script when executing it from the command line.
+    They allow a script to work dynamically, instead of hardcoding values inside.
+
+    Example:
+
+    ./myscript.sh file1.txt file2.txt
+
+    Here:
+        myscript.sh → script name
+        file1.txt and file2.txt → arguments
+
+
+##Types of Argument Variables
+In Bash, arguments are accessed with special variables:
+
+Variable	Meaning	                                   Example
+$0	       Name of the script	                      ./myscript.sh
+$1	       First argument	                               file1.txt
+$2	       Second argument	                               file2.txt
+$3 … $9	       Third to ninth argument	                       $3, $4 etc.
+$@	       All arguments (individually, list form)	       file1.txt file2.txt
+$*	       All arguments (as one string)	               "file1.txt file2.txt"
+$#	       Number of arguments passed	                2
+$$	       Process ID of the script	                        12345
+$!	       PID of last background process	                 —
+$?	       Exit status of last command	                0 (success) or nonzero
+
+
+
+Examples
+1. Basic script with arguments
+#!/bin/bash
+
+echo "Script name: $0"
+echo "First arg: $1"
+echo "Second arg: $2"
+echo "Total args: $#"
+
+Run:
+
+./test.sh hello world
+
+Output:
+Script name: ./test.sh
+First arg: hello
+Second arg: world
+Total args: 2
+
+
+
+2. Using all arguments
+#!/bin/bash
+
+echo "Using \$@: $@"
+echo "Using \$*: $*"
+
+Run:
+
+./test.sh apple banana cherry
+
+Output:
+Using $@: apple banana cherry
+Using $*: apple banana cherry
+
+Difference: $@ treats each argument separately, $* treats all as a single string.
+
+
+3. Loop through arguments
+#!/bin/bash
+
+echo "Arguments list:"
+for arg in "$@"
+do
+  echo "-> $arg"
+done
+
+Run:
+
+./test.sh red green blue
+
+Output:
+Arguments list:
+-> red
+-> green
+-> blue
+
+
+
+4. Check number of arguments
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+  echo "Usage: $0 <arg1> <arg2>"
+  exit 1
+fi
+
+echo "You entered: $1 and $2"
+
+Run:
+
+./test.sh onlyone
+
+Output:
+Usage: ./test.sh <arg1> <arg2>
+
+
+
+5. Practical Example (copy script)
+#!/bin/bash
+
+# Script to copy one file to another
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <source_file> <destination_file>"
+  exit 1
+fi
+
+cp "$1" "$2"
+echo "Copied $1 to $2"
+
+Run:
+
+./copy.sh myfile.txt backup.txt
+

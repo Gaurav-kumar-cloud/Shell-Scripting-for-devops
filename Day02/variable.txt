@@ -1,0 +1,110 @@
+Types of Variables in Shell Scripting
+1. User-defined variables
+
+Variables created by the user.
+    No data type (all treated as string, unless used in arithmetic).
+    No $ when assigning, but $ when accessing.
+
+Example:
+#!/bin/bash
+name="Gaurav"
+age=25
+echo "My name is $name and I am $age years old."
+
+2. Environment variables
+
+Predefined variables provided by the system, available to all processes.
+    Can be seen using printenv or env.
+    Common ones: HOME, PATH, USER, SHELL, PWD, HOSTNAME.
+
+Example:
+#!/bin/bash
+echo "User: $USER"
+echo "Home directory: $HOME"
+echo "Shell: $SHELL"
+
+
+3. Positional parameters (arguments)
+
+Special variables for command-line arguments.
+
+    $0 → Script name
+    $1, $2, $3... → Arguments
+    $# → Number of arguments
+    $@ → All arguments as separate words
+    $* → All arguments as single word
+    $$ → PID of script
+    $? → Exit status of last command
+    $! → PID of last background process
+
+Example:
+#!/bin/bash
+echo "Script name: $0"
+echo "First argument: $1"
+echo "Second argument: $2"
+echo "Total args: $#"
+echo "All args: $@"
+
+Run:
+
+./script.sh hello world
+
+Output:
+
+Script name: ./script.sh
+First argument: hello
+Second argument: world
+Total args: 2
+All args: hello world
+
+
+4. Read variables (user input)
+
+Captures user input.
+
+Example:
+#!/bin/bash
+read -p "Enter your name: " username
+echo "Welcome, $username!"
+
+5. Constant variables
+
+Made read-only using readonly keyword.
+
+Example:
+#!/bin/bash
+pi=3.1415
+readonly pi
+pi=22/7   # ❌ Error: cannot modify read-only variable
+
+
+6. Array variables
+
+old multiple values in one variable.
+
+Example:
+#!/bin/bash
+fruits=("Apple" "Banana" "Cherry")
+echo "First fruit: ${fruits[0]}"
+echo "All fruits: ${fruits[@]}"
+echo "Total fruits: ${#fruits[@]}"
+
+
+7. Special variables
+
+Already defined by the shell.
+Variable	Meaning
+$0	Script name
+$1 … $9	Positional arguments
+$@	All arguments (individually)
+$*	All arguments (as single string)
+$#	Number of arguments
+$$	PID of script
+$!	PID of last background process
+$?	Exit status of last command
+
+Example:
+#!/bin/bash
+ls /tmp
+echo "Exit status of ls: $?"
+
